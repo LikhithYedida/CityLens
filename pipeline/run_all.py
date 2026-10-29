@@ -3,12 +3,14 @@
 Run:  python -m pipeline.run_all
 """
 from pipeline import build_panel, census_acs, fred, geo, migration, permits, qcew, zillow
+from analysis import opportunity_index
 from pipeline.utils import log
 
 STEPS = [("Zillow", zillow.run), ("FRED", fred.run), ("Crosswalk", geo.run),
          ("Census ACS", census_acs.run), ("BLS QCEW", qcew.run),
          ("Building permits", permits.run), ("IRS migration", migration.run),
-         ("Master panel", build_panel.run)]
+         ("Master panel", build_panel.run),
+         ("Opportunity Index", opportunity_index.run)]
 
 if __name__ == "__main__":
     failed = []

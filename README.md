@@ -11,12 +11,28 @@ people who want to build a life there. It serves two audiences:
 - **People** deciding where to start a career, raise a family, or stretch a salary further
 - **Businesses** (builders, lenders, employers, investors) deciding where to grow next
 
+## Key findings so far
+
+**Opportunity Index (Layer 2):** 379 U.S. metropolitan areas ranked on affordability, momentum,
+and demand. [Full report](docs/opportunity_index_report.md)
+
+- **Top 5:** Huntsville AL, Austin TX, Sherman-Denison TX, Raleigh NC, Sioux Falls SD.
+  Huntsville, Austin, Sherman-Denison, and Raleigh stay in the top 25 under 94-99% of
+  1,000 random weightings, so the result doesn't depend on the chosen weights.
+- **Austin turned a corner:** wages grew about 5% a year since 2023 while home prices fell
+  about 5% a year, the biggest paycheck-vs-prices gain of any large metro.
+- **Only 62 of 379 metros are both growing and affordable.** Among large metros, the sweet
+  spot is concentrated in Texas, plus Raleigh, Oklahoma City, Indianapolis, Columbus,
+  Richmond, Birmingham, and Atlanta.
+- **The squeeze is coastal:** San Francisco, Boston, Los Angeles, and Santa Barbara rank near
+  the bottom, where a mortgage on a typical home takes 39-63% of a typical household's income.
+
 ## Roadmap
 | Layer | Question it answers | Status |
 |---|---|---|
 | 1. Data foundation | 7 public sources joined into one tested metro-by-month table | ✅ Done |
-| 2. Opportunity Index | Where does a paycheck go furthest today? | Next |
-| 3. Rising City Detector | Which affordable metros are about to grow? | Planned |
+| 2. Opportunity Index | Where does a paycheck go furthest today? | ✅ Done |
+| 3. Rising City Detector | Which affordable metros are about to grow? | Next |
 | 4. Policy Lab | Did Minneapolis's zoning reform slow rent growth? (synthetic control) | Planned |
 | 5. Forecast Engine | Where will rents be in 12 months, with honest uncertainty? | Planned |
 | 6. Ripple Map | When a metro booms, which neighbors follow? | Planned |
@@ -56,7 +72,7 @@ python -m pytest                  # offline tests, no internet needed
 python -m pipeline.run_all        # runs every source in order
 ```
 Or run one source at a time: `python -m pipeline.zillow`, `pipeline.fred`, `pipeline.geo`,
-`pipeline.census_acs`, `pipeline.qcew`, `pipeline.permits`, `pipeline.migration`, then `pipeline.build_panel`.
+`pipeline.census_acs`, `pipeline.qcew`, `pipeline.permits`, `pipeline.migration`, then `pipeline.build_panel`, then `analysis.opportunity_index`.
 
 Clean tables land in `data/clean/`. Every run adds a health line to `data/run_log.jsonl`.
 
