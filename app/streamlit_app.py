@@ -21,7 +21,10 @@ import pandas as pd
 import streamlit as st
 
 ROOT = Path(__file__).resolve().parents[1]
-DATA_DIR = Path(os.environ.get("CITYLENS_DATA_DIR", ROOT / "data" / "marts"))
+# Local runs read the pipeline output. The hosted app reads the committed copy in app/data.
+LOCAL_MARTS = ROOT / "data" / "marts"
+DATA_DIR = Path(os.environ.get("CITYLENS_DATA_DIR") or
+                (LOCAL_MARTS if (LOCAL_MARTS / "metro_scorecard.parquet").exists() else ROOT / "app" / "data"))
 REPO = "https://github.com/LikhithYedida/CityLens/blob/main"
 
 NAVY, BLUE, ORANGE, TEAL, GRAY = "#1f3b63", "#2a78d6", "#eb6834", "#1baf7a", "#c3c8d0"
@@ -371,8 +374,8 @@ with overview:
     sweet = df[(df["metro_type"] == "Rising & Affordable") & (df["size_band"] == "Large (1M+)")]
     sweet_names = [c.split(",")[0] for c in sweet.sort_values("opportunity_rank")["city"].head(6)]
     cards = [card_html(f"{n_sweet} of {len(df)}", "Metros that are affordable and still growing",
-                       f"{series_list(sweet_names)} lead the large metros. In San Francisco, Los Angeles and "
-                       "Boston, a mortgage on a typical home takes well over a third of a typical income.",
+                       f"{series_list(sweet_names)} lead the large metros. In Los Angeles, San Jose, San Diego and "
+                       "San Francisco, a mortgage on a typical home takes more than half of a typical income.",
                        "opportunity_index_report.md")]
     if summary:
         robust = summary.get("opportunity_robust", [])[:4]

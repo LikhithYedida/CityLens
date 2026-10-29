@@ -113,3 +113,13 @@ def test_app_runs_without_optional_files(data_dir):
     (data_dir / "us_states.geojson").unlink()
     at = run_app()
     assert not at.exception
+
+
+def test_hosted_app_runs_from_committed_data(monkeypatch):
+    """The hosted app reads app/data. Skipped until the scorecard step has published it."""
+    committed = Path(APP).parent / "data"
+    if not (committed / "metro_scorecard.parquet").exists():
+        pytest.skip("app/data not published yet")
+    monkeypatch.setenv("CITYLENS_DATA_DIR", str(committed))
+    at = run_app()
+    assert not at.exception

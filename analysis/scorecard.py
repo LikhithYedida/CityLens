@@ -368,6 +368,20 @@ def write_state_outlines() -> None:
                                              encoding="utf-8")
 
 
+APP_FILES = ["metro_scorecard.parquet", "metro_history.parquet", "dashboard_summary.json", "us_states.geojson"]
+
+
+def publish_app_data() -> None:
+    """Copy the four small files the app reads into app/data, which is committed so the hosted app
+    runs without rebuilding the pipeline. About 2 MB in total."""
+    import shutil
+    dest = ROOT / "app" / "data"
+    dest.mkdir(exist_ok=True)
+    for name in APP_FILES:
+        if (MARTS / name).exists():
+            shutil.copyfile(MARTS / name, dest / name)
+
+
 def run() -> pd.DataFrame:
     sc = build()
     sc.to_parquet(OUT, index=False)
@@ -376,6 +390,7 @@ def run() -> pd.DataFrame:
     write_summary(sc)
     chart_scorecard(sc)
     write_memo(sc)
+    publish_app_data()
     record_run("metro_scorecard", len(sc), "")
     log.info("Scorecard: %s metros. Saved metro_scorecard.parquet, the scorecard chart and docs/executive_memo.md",
              len(sc))

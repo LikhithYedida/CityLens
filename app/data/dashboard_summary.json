@@ -1,0 +1,111 @@
+{
+  "housing_as_of": "2026-09",
+  "mortgage_rate": 6.862500000000001,
+  "n_ranked": 379,
+  "n_rising_affordable": 62,
+  "n_rising": 24,
+  "rising_midwest_northeast": 19,
+  "n_cooling": 56,
+  "cooling_south_west": 55,
+  "n_next_ring_out": 26,
+  "rent_forecast_median": 0.03074519462423039,
+  "home_forecast_median": 0.01550784339377441,
+  "opportunity_robust": [
+    {
+      "metro": "Huntsville, AL",
+      "share_top25": 0.989
+    },
+    {
+      "metro": "Austin-Round Rock-San Marcos, TX",
+      "share_top25": 0.963
+    },
+    {
+      "metro": "Sherman-Denison, TX",
+      "share_top25": 0.936
+    },
+    {
+      "metro": "Raleigh-Cary, NC",
+      "share_top25": 0.948
+    },
+    {
+      "metro": "Sioux Falls, SD-MN",
+      "share_top25": 0.762
+    }
+  ],
+  "forecast": {
+    "home_value": {
+      "model": 4.327922674101043,
+      "base": 4.974853626063731,
+      "calm_model": 3.606822482431786,
+      "calm_base": 3.5554192788918004,
+      "calm_coverage": 0.9596934596934596
+    },
+    "rent": {
+      "model": 3.118696067958299,
+      "base": 3.514113991380699,
+      "calm_model": 1.8162639074909621,
+      "calm_base": 2.747602003901835,
+      "calm_coverage": 0.9418940609951846
+    }
+  },
+  "rising": {
+    "avg_rank_corr": 0.542253476216245,
+    "avg_spread_pp": 4.84181841760592,
+    "worst_spread_pp": 3.669892358241414
+  },
+  "ripple": {
+    "effect_0_75": 0.44593111673507035,
+    "effect_75_150": 0.12357595228083135,
+    "effect_150_300": 0.007638047151825086,
+    "t_0_75": 3.7677000853237606,
+    "morans_i": 0.6892135015777483,
+    "morans_p": 0.001
+  },
+  "policy": {
+    "as_of": "2026-09",
+    "gap_latest": -0.16330272264923057,
+    "gap_end_2019": -0.006069312365075309,
+    "p_value": 0.016574585635359115,
+    "n_donors": 180,
+    "suburbs_gap": -0.07931160384921705,
+    "regional_share_low": 0.34081285793368166,
+    "regional_share_high": 0.4856722690385024,
+    "reform_effect_low_pp": 8.399111880001351,
+    "reform_effect_high_pp": 10.215123943119206,
+    "home_value_p_value": 0.2052401746724891
+  },
+  "freshness": {
+    "zillow_metro_home_value": "2026-09",
+    "zillow_metro_rent": "2026-09",
+    "zillow_county_home_value": "2026-09",
+    "zillow_county_rent": "2026-09",
+    "cbsa_delineation": "2023-07",
+    "bls_qcew": "2026-03",
+    "fred": "2026-10",
+    "census_acs5": "2024",
+    "census_permits": "2025",
+    "irs_migration": "2022-2023",
+    "opportunity_index": "2026-09",
+    "rising_cities": "2026-09",
+    "zillow_city_rent": "2026-09",
+    "zillow_city_home_value": "2026-09",
+    "policy_lab": "2026-09",
+    "forecast_engine": "2026-09",
+    "census_gazetteer_cbsa": "2024",
+    "ripple_map": "2026-09"
+  },
+  "coverage": {
+    "panel_total": 935,
+    "metropolitan": 393,
+    "micropolitan": 542,
+    "micro_with_rent": 340,
+    "puerto_rico": 6,
+    "connecticut": 5,
+    "no_zillow": [
+      "Amherst Town-Northampton, MA",
+      "Kenosha, WI",
+      "Slidell-Mandeville-Covington, LA"
+    ],
+    "ranked": 379
+  }
+}
