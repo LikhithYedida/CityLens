@@ -7,6 +7,7 @@ data/clean/*
 !data/raw/.gitkeep
 !data/clean/.gitkeep
 data/marts/*
+data/run_log.jsonl
 !data/marts/.gitkeep
 .ipynb_checkpoints/
 .pytest_cache/
