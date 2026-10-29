@@ -123,8 +123,7 @@ streamlit run app/streamlit_app.py
 Next on my list: a county to region crosswalk so Connecticut can be ranked, a monthly automatic
 refresh, and drive time instead of straight line distance in the Ripple Map.
 
-## About me
+## About Me
 
-I'm Likhith Yedida, a data analyst. I built CityLens end to end, from the data pipeline to the
-statistics to the app. If you're hiring or want to talk housing data, reach me on
+I'm Likhith Yedida, a data analyst.
 [LinkedIn](https://www.linkedin.com/in/likhithyedida).
