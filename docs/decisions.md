@@ -9,7 +9,7 @@ One line per judgment call, so every number in this project can be explained and
 | 3 | 2026-10-27 | Use Zillow's mid-tier, smoothed, seasonally adjusted home values (ZHVI). | Mid-tier reflects a typical home, not luxury or starter extremes. |
 | 4 | 2026-10-27 | Average the weekly 30-year mortgage rate to one value per month. | Matches Zillow's monthly grain so tables join cleanly. |
 | 5 | 2026-10-27 | Pull CPI alongside mortgage rates. | Lets later steps compare prices in inflation-adjusted dollars. |
-| 6 | 2026-10-27 | Treat IRS migration data from 2022–2023 onward as a new series. | The IRS changed its return-matching method starting that year. |
+| 6 | 2026-10-27 | Treat IRS migration data from 2022-2023 onward as a new series. | The IRS changed its return-matching method starting that year. |
 | 7 | 2026-10-27 | Downloads fail loudly with a fix message, and every run is logged. | Zillow changes download paths; silent failures would produce stale results. |
 | 8 | 2026-10-27 | Use the July 2023 Census metro definitions for every year. | Metro boundaries change over time; one fixed definition keeps the panel consistent. |
 | 9 | 2026-10-27 | Match Zillow metros to Census metros two independent ways (name and county vote), and report the match rate. | No single method is reliable alone; agreement between two methods is evidence the join is right. |
@@ -69,3 +69,18 @@ One line per judgment call, so every number in this project can be explained and
 | 63 | 2026-10-29 | The Next Ring Out requires top-fifth ripple pressure, neighbors growing faster than the metro, and above-median affordability. | Points to where growth is likely to arrive next while it's still within reach. |
 | 64 | 2026-10-29 | Treat the ripple as predictive, not causal. | Neighbors may rise together from shared causes (a regional employer, policy, climate) rather than literal spread. |
 | 65 | 2026-10-29 | Every new layer uses chart forms not used before (map, distance-decay line, quadrant scatter), with overlap-free labels that are never dropped. | Each visual answers a new question; repeating forms makes a portfolio feel templated. |
+| 66 | 2026-10-29 | Join every analysis into one scorecard row per metro, and have the memo and app read only that table. | One source of truth; a number can't differ between the memo, the app and the reports. |
+| 67 | 2026-10-29 | Generate the executive memo from saved results instead of typing numbers by hand; each layer saves a summary file. | Rerunning the pipeline updates the memo, and no figure goes stale. |
+| 68 | 2026-10-29 | The executive visual colors each cell by how it compares with all U.S. metros for a household, not just the 15 shown. | Keeps the colors meaningful nationally; 'blue' always means better than most metros. |
+| 69 | 2026-10-29 | The household tool shows money left each month, not just a ratio, and states what the housing cost excludes. | People decide in dollars; leaving out taxes and insurance should be visible, not hidden. |
+| 70 | 2026-10-29 | The builder tool scores markets on relative ranks and says so on screen. | A rank-based score is comparable across signals but is not a predicted return. |
+| 71 | 2026-10-29 | The app is tested headlessly (Streamlit AppTest) against a fake scorecard, and every push runs all tests in GitHub Actions. | The app can't silently break when the data or code changes. |
+| 72 | 2026-10-29 | Plain language throughout: no emoji, symbols for words, or filler in any report, chart or page. | The work is read by hiring managers and executives; it should read like an analyst wrote it. |
+| 73 | 2026-10-29 | The app uses a light theme with one navy accent and a CARTO light basemap. | Executives read it on projectors and in printouts, where dark themes wash out. |
+| 74 | 2026-10-29 | Map scroll zoom is off; zoom is by buttons or double click, and labels sit on a white background. | Scrolling the page no longer gets trapped by the map, and labels stay readable over any color. |
+| 75 | 2026-10-29 | The builder tool reruns its ranking under 500 random weight changes and reports how often each market stays in the top 10. | A ranking that flips with small weight changes should not drive a capital decision. |
+| 76 | 2026-10-29 | Missing values show as n/a and city names are shortened to the principal city and state. | Readers should not have to decode NaN or long hyphenated Census metro names. |
+| 77 | 2026-10-29 | App maps are static Albers projection charts with state outlines instead of a tiled web map, with labels placed only where they do not collide. | Labels always render, the page scrolls without the map capturing it, and Alaska and Hawaii sit in their usual insets. |
+| 78 | 2026-10-29 | The front page leads with the main finding as its headline, and each KPI carries a line of context. | An executive should get the conclusion in five seconds and know what each number is measured against. |
+| 79 | 2026-10-29 | Metro profiles plot each metro against the median U.S. metro on the same index, and text tables wrap instead of truncating. | A number means little without a benchmark, and a validation table that cuts off its results hides the evidence. |
+| 80 | 2026-10-29 | Rank only the 393 metropolitan areas, not the 542 micropolitan areas kept in the panel, and show the path from 935 to 379 in the app. | Zillow publishes rents for only 340 micropolitan areas, and survey and job estimates for towns that small carry wide error margins. |

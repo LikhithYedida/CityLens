@@ -313,7 +313,7 @@ def write_report(exp: dict, bt: pd.DataFrame, quint: pd.DataFrame, now: pd.DataF
           "ahead of its own incomes, do they come back down?' They strongly do.",
           "", "## 2. How the signals changed, year by year", "",
           "Effect (pp per 1 SD) estimated separately for each starting December. Bold = statistically clear "
-          "(|t| ≥ 2).", "",
+          "(|t| of 2 or more).", "",
           "| Starting Dec | " + " | ".join(LABELS[f].split(" (")[0] for f in FEATURES) + " | R² |",
           "|---|" + "---|" * (len(FEATURES) + 1)]
     for _, r in exp["yearly"].iterrows():
@@ -328,7 +328,7 @@ def write_report(exp: dict, bt: pd.DataFrame, quint: pd.DataFrame, now: pd.DataF
           "| Design | " + " | ".join(str(y) for y in years) + " | Average | Top-minus-bottom fifth (avg pp) |",
           "|---|" + "---|" * (len(years) + 2)]
     for name, r in lb.iterrows():
-        mark = " ⭐" if name == CHOSEN else ""
+        mark = " (chosen)" if name == CHOSEN else ""
         L.append(f"| {name}{mark} | " + " | ".join(f"{r[y]:.2f}" for y in years) +
                  f" | **{r['average']:.2f}** | {r['avg_spread_pp']:+.1f} |")
     L += ["", f"**Chosen: {CHOSEN}.** It needs no fitting, so it can't overfit a past market, and it had the "

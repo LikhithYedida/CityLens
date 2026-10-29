@@ -37,7 +37,7 @@ This analysis rebuilds the test transparently, then tries to find out *why* the 
 | Austin, TX | HOME zoning reform (2023) |
 | Cambridge, MA | Citywide multifamily upzoning (2025) |
 
-- **Method:** demeaned synthetic control (weights ≥ 0, summing to 1) fit on December 2018 and earlier. Pre-reform fit error: **0.28%** a month, so the twin tracked Minneapolis closely.
+- **Method:** demeaned synthetic control (non-negative weights that sum to 1) fit on December 2018 and earlier. Pre-reform fit error: **0.28%** a month, so the twin tracked Minneapolis closely.
 - **Synthetic Minneapolis is made of:** Saint Augustine, FL (22%), Bellevue, WA (20%), Tacoma, WA (13%), Mesquite, TX (10%), Albany, NY (9%), Mobile, AL (6%), Allentown, PA (5%), Ann Arbor, MI (5%), Decatur, GA (5%).
 
 ## Trying to break the result

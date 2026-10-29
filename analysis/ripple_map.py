@@ -385,10 +385,11 @@ def write_report(gm, clusters, effects, bt, nro, figs, window) -> None:
         L.append(f"1. **{r['cbsa_title']}**: neighbors {r['ring_0_75']:+.1%} vs. itself {r['own']:+.1%} over the "
                  f"past year (vs. national), adding about {r['ripple_pressure_pp']:+.1f} pts of expected growth{orank}")
     L += ["", "## Backtest", "",
-          "Rank correlation of next-year growth, model trained only on earlier years: own momentum alone → with "
-          "neighbor rings.", ""]
-    L.append(" · ".join(f"**{int(r['year'])}:** {r['own_rank_corr']:.2f} → {r['ripple_rank_corr']:.2f}"
-                        for _, r in bt.iterrows()))
+          "Rank correlation between predicted and actual next-year growth. Each year's model is trained only on "
+          "earlier years.", "",
+          "| Test year | Own momentum only | With neighbor rings |", "|---|---|---|"]
+    for _, r in bt.iterrows():
+        L.append(f"| {int(r['year'])} | {r['own_rank_corr']:.2f} | {r['ripple_rank_corr']:.2f} |")
     L += ["", "## How it works", "",
           f"- **Clusters:** 3-year home-value growth ({window}); each metro's {K_NEIGHBORS} nearest metros as neighbors; "
           f"global and local Moran's I with {N_PERMUTATIONS} permutations; clusters shown at p < {LISA_P}.",

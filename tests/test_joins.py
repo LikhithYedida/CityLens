@@ -148,4 +148,4 @@ def test_crosswalk_report_saves_as_utf8(tmp_path, monkeypatch):
     x = geo.build_crosswalk(fake_zillow(), geo.clean_delineation(fake_delineation_raw()))
     geo.write_report(x)
     text = (tmp_path / "report.md").read_bytes().decode("utf-8")
-    assert "→" in text and "Nowhere, ZZ" in text    
+    assert "Nowhere, ZZ" in text and text.startswith("# Zillow to Census")    

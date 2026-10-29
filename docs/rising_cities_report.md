@@ -40,7 +40,7 @@ The metro fixed effects price-to-income number is much larger because it answers
 
 ## 2. How the signals changed, year by year
 
-Effect (pp per 1 SD) estimated separately for each starting December. Bold = statistically clear (|t| ≥ 2).
+Effect (pp per 1 SD) estimated separately for each starting December. Bold = statistically clear (|t| of 2 or more).
 
 | Starting Dec | Net migration | Job growth | Wage growth | New homes permitted | Price-to-income | Home price growth | R² |
 |---|---|---|---|---|---|---|---|
@@ -60,7 +60,7 @@ Each year, every design is built only from information available at the time, th
 
 | Design | 2021 | 2022 | 2023 | 2024 | Average | Top-minus-bottom fifth (avg pp) |
 |---|---|---|---|---|---|---|
-| Momentum + affordability ⭐ | 0.40 | 0.36 | 0.68 | 0.74 | **0.54** | +4.8 |
+| Momentum + affordability (chosen) | 0.40 | 0.36 | 0.68 | 0.74 | **0.54** | +4.8 |
 | Momentum + affordability + low supply | 0.13 | 0.52 | 0.71 | 0.71 | **0.52** | +3.9 |
 | Momentum only | 0.26 | 0.28 | 0.68 | 0.68 | **0.47** | +4.1 |
 | Regression (last 2 years only) | 0.23 | -0.12 | 0.70 | 0.70 | **0.38** | +3.3 |

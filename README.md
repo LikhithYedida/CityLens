@@ -1,159 +1,113 @@
-# CityLens: Seeing Where Opportunity Is Growing in America
+# CityLens
 
-CityLens looks at every U.S. metro each month through one lens: where are jobs, people, and
-income arriving faster than prices are climbing? It finds the places where opportunity is
-growing and life is still within reach, before everyone else notices.
+**Where opportunity is growing in America.**
 
-It ranks 935 metros on how far a paycheck goes today, detects which affordable metros are
-about to grow, and tests what actually works (like zoning reform) to keep cities open to the
-people who want to build a life there. It serves two audiences:
+CityLens ranks 379 U.S. metropolitan areas on how far a typical paycheck goes, identifies
+where home prices are likely to rise or cool next, forecasts rents a year ahead with tested
+uncertainty ranges, and measures what housing policy actually does. It is built from seven
+public data sources, rebuilt from the original publishers with one command, and checked by
+66 automated tests.
 
-- **People** deciding where to start a career, raise a family, or stretch a salary further
-- **Businesses** (builders, lenders, employers, investors) deciding where to grow next
+Housing data through September 2026. The [one-page executive memo](docs/executive_memo.md)
+has the full summary.
 
-## Key findings so far
+![The 15 largest metros at a glance](docs/figures/scorecard_largest_metros.png)
 
-**Opportunity Index (Layer 2):** 379 U.S. metropolitan areas ranked on affordability, momentum,
-and demand. [Full report](docs/opportunity_index_report.md)
+## Findings
 
-- **Top 5:** Huntsville AL, Austin TX, Sherman-Denison TX, Raleigh NC, Sioux Falls SD.
-  Huntsville, Austin, Sherman-Denison, and Raleigh stay in the top 25 under 94-99% of
-  1,000 random weightings, so the result doesn't depend on the chosen weights.
-- **Austin turned a corner:** wages grew about 5% a year since 2023 while home prices fell
-  about 5% a year, the biggest paycheck-vs-prices gain of any large metro.
-- **Only 62 of 379 metros are both growing and affordable.** Among large metros, the sweet
-  spot is concentrated in Texas, plus Raleigh, Oklahoma City, Indianapolis, Columbus,
-  Richmond, Birmingham, and Atlanta.
-- **The squeeze is coastal:** San Francisco, Boston, Los Angeles, and Santa Barbara rank near
-  the bottom, where a mortgage on a typical home takes 39-63% of a typical household's income.
+**1. Only 62 of 379 metros are both affordable and growing.** Huntsville, Austin,
+Sherman-Denison, Raleigh and Sioux Falls lead the Opportunity Index, and the top four stay in
+the top 25 under 94 to 99 percent of 1,000 alternative weightings. Among large metros, the
+group that is both affordable and growing is Austin, Raleigh, Dallas, San Antonio, Houston,
+Oklahoma City, Indianapolis and Columbus. In San Francisco, Los Angeles and Boston, a mortgage
+on a typical home takes 39 to 62 percent of a typical household's income.
+[Report](docs/opportunity_index_report.md)
 
-**Rising City Detector (Layer 3):** which metros' home prices will outgrow the typical metro
-next year, and do the usual boomtown signals predict it? Panel regression on 2,600+
-metro-years, plus a walk-forward backtest. [Full report](docs/rising_cities_report.md)
+**2. Price growth has moved north.** Of the 24 metros most likely to outgrow the national
+market next year, 19 are in the Midwest or Northeast. Of the 56 cooling boomtowns, 55 are in
+the South and West, 17 of them in Florida. Metros gaining residents saw faster price growth
+through 2021 and slower growth from 2022 on, so a model trained on the pandemic years ranks
+metros worse than a simple two-signal rule. [Report](docs/rising_cities_report.md)
 
-- **The pandemic boomtown signal flipped.** High migration predicted faster price growth
-  through 2021, then turned negative once rates rose in 2022 (clearly so in 2023 and 2024).
-- **Simple beat fitted.** A regression trained on past years ranked metros worse out of sample
-  than an unfitted blend of momentum and affordability, because it learned a market that stopped
-  existing. The blend's top fifth outgrew its bottom fifth by 4.8 points a year on average, and
-  never by less than 3.7.
-- **The new Rising Cities are in the Midwest and Northeast:** 19 of 24, including Springfield IL,
-  Syracuse, South Bend, Cedar Rapids, and four Michigan metros (Saginaw, Monroe, Flint, Battle Creek).
-- **55 of 56 Cooling Boomtowns are in the South and West**, 17 of them in Florida, along with
-  Austin, Bend, and St. George: pandemic-era magnets where prices have stalled or fallen.
-- **The two lists answer different questions.** Austin ranks #2 on the Opportunity Index and is
-  also a Cooling Boomtown: falling prices plus strong job growth make it one of the best deals
-  for someone moving there now.
-
-**Policy Lab (Layer 4):** did Minneapolis's 2018 decision to end single-family-only zoning slow
-rent growth? Published studies disagree (from 17-34% lower to 3-5% higher), so this rebuilds
-the test with synthetic control and then tries to break it. [Full report](docs/policy_lab_report.md)
-
-![Minneapolis rent vs synthetic Minneapolis](docs/figures/policy_lab_rent_vs_synthetic.png)
-
-- **The headline replicates:** Minneapolis rents are 16% below a synthetic Minneapolis built from
-  180 cities; only 2 of 180 placebo cities show a gap as unusual (p = 0.017).
-- **But the gap opened in 2020, not after the 2018 vote**, alongside COVID and the unrest after
-  George Floyd's murder.
-- **Roughly a third to a half of the gap also shows up in Minneapolis's own suburbs**, which the
-  reform didn't cover. That part is regional.
-- **Best estimate: the reform explains at most 8-10 points of lower rent.** The 17-34% headline
-  overstates it; "no effect" understates it. The home-value gap isn't statistically clear (p = 0.21).
-
-**Forecast Engine (Layer 5):** 12-month rent and home-value forecasts for every metro, with
-80% ranges, tested in a rolling backtest against simple baselines. [Full report](docs/forecast_report.md)
-
-![Rent forecast for the 12 largest metros](docs/figures/forecast_large_metros.png)
-
-- **Beats every simple baseline:** rent forecasts missed by 3.1 points of 12-month growth on
-  average vs. 3.5 for the best baseline (11% smaller errors), and 34% smaller since 2022.
-  Home values: 13% smaller errors overall, roughly tied with the best baseline since 2022.
-- **No model saw the pandemic coming.** Most forecast error is the national swing. Two designs
-  failed in different years (one missed the 2021 surge, the other the 2022 rate turn), so the
-  final forecast averages them. Every design tried is reported, including the losers.
-- **Honest ranges:** 94-96% of outcomes landed inside the 80% ranges in 2022-2025; 72-81%
-  including the pandemic shock.
-- **Next 12 months:** typical metro rent +3.1%. The slowest growth is forecast for Florida and
-  Texas (Sarasota, Cape Coral, Austin, Dallas, Houston, San Antonio, Orlando). Seven of the
-  ten slowest are metros the Rising City Detector had already flagged as Cooling Boomtowns,
-  using different data and a different method.
-
-**Ripple Map (Layer 6):** when a metro booms, which neighbors follow, and how far does growth
-spread? Spatial statistics on 376 lower-48 metros. [Full report](docs/ripple_map_report.md)
+**3. Growth spreads about 75 miles.** Faster growth among neighbors within 75 miles adds
+0.45 points to a metro's growth the following year (per standard deviation), beyond its own
+momentum, and the effect held before, during and after the pandemic. Twenty-six affordable
+metros have neighbors pulling ahead of them, including Eau Claire, Fargo, Fort Wayne and
+Davenport. [Report](docs/ripple_map_report.md)
 
 ![Where home-value growth clusters](docs/figures/ripple_cluster_map.png)
 
-- **Growth clusters strongly by geography** (Moran's I = 0.69, p = 0.001). 97 metros form rising
-  clusters, a belt from Chicago and Detroit to Philadelphia and New York. 67 form cooling
-  clusters across Texas, Florida, Colorado and coastal California.
-- **Growth ripples about 75 miles, then fades.** Faster growth among neighbors within 75 miles
-  adds +0.45 points to a metro's next-year growth (per standard deviation), beyond its own
-  momentum, and the effect held in 2016-19, 2020-21 and 2022-25 alike. Beyond 150 miles it disappears.
-- **26 affordable metros are in the Next Ring Out**, where neighbors are pulling ahead and growth
-  hasn't arrived yet: Eau Claire, Fargo, Bloomington IL, Fort Wayne, Davenport, Buffalo and more.
+**4. Rent in a typical metro is forecast to rise about 3 percent over the next year.** The
+slowest growth among large metros is expected in Austin, Dallas, San Antonio and Orlando. In
+backtests over 2020 to 2025, the forecasts missed by 3.1 points of 12-month growth against
+3.5 for the best simple rule, and by 1.8 against 2.7 since 2022. Their 80 percent ranges held
+94 percent of outcomes since 2022. [Report](docs/forecast_report.md)
 
-## Roadmap
-| Layer | Question it answers | Status |
+**5. Zoning reform lowered Minneapolis rents, but by less than reported.** Minneapolis rents
+are 16 percent below a synthetic Minneapolis built from 180 cities (p = 0.017), but the gap
+opened in 2020, not after the 2018 vote, and Minneapolis's own suburbs fell about 8 percent
+as well. The reform explains at most 8 to 10 points of lower rent. [Report](docs/policy_lab_report.md)
+
+## Use it
+
+The decision app has a tool for households (enter an income and a rent-or-buy choice, see
+which metros fit and what is left over each month) and a tool for builders and lenders (weight
+the signals that matter and get ranked markets), plus a profile for every metro.
+
+```bash
+streamlit run app/streamlit_app.py
+```
+
+## How it is built
+
+| Stage | What it does | Where |
 |---|---|---|
-| 1. Data foundation | 7 public sources joined into one tested metro-by-month table | ✅ Done |
-| 2. Opportunity Index | Where does a paycheck go furthest today? | ✅ Done |
-| 3. Rising City Detector | Which affordable metros are about to grow? | ✅ Done |
-| 4. Policy Lab | Did Minneapolis's zoning reform slow rent growth? (synthetic control) | ✅ Done |
-| 5. Forecast Engine | Where will rents be in 12 months, with honest uncertainty? | ✅ Done |
-| 6. Ripple Map | When a metro booms, which neighbors follow? | ✅ Done |
-| 7. Decision Tools | Where should a family move, or a builder build? (app + executive memo) | Next |
-| Ops | Monthly automatic refresh with health checks (GitHub Actions) | Planned |
+| Ingest | Pulls Zillow, Census ACS, Census building permits, BLS QCEW, IRS migration, FRED and Census geography; validates each source and logs every run | `pipeline/` |
+| Crosswalk | Matches Zillow metros to official Census metros two independent ways (97.7% matched); manual fixes kept in a reviewed file | `pipeline/geo.py` |
+| Panel | Builds one table of 935 metros by month since 2015 in SQL (DuckDB), with 8 data tests that fail the build on a bad join | `sql/` |
+| Opportunity Index | Percentile-based index of affordability, momentum and demand, with 1,000-weighting and drop-one sensitivity tests | `analysis/opportunity_index.py` |
+| Rising City Detector | Panel regression with year fixed effects and clustered errors, year-by-year estimates and a walk-forward backtest of six designs | `analysis/rising_cities.py` |
+| Policy Lab | Synthetic control of Minneapolis's 2040 Plan with placebo tests in space and time, leave-one-out and same-market comparisons | `analysis/policy_lab.py` |
+| Forecast Engine | Gradient-boosted forecasts blended with a national-trend model, a rolling-origin backtest against three baselines, and conformal 80% ranges | `analysis/forecast_engine.py` |
+| Ripple Map | Global and local Moran's I, distance-ring spillover regression and a U.S. cluster map | `analysis/ripple_map.py` |
+| Scorecard | Joins every analysis into one row per metro for the memo and the app | `analysis/scorecard.py` |
 
-## Data sources
-| Source | What it gives | Status |
-|---|---|---|
-| Zillow Research (ZHVI, ZORI) | Home values and rents by metro and county | ✅ Built |
-| FRED | 30-year mortgage rate, CPI | ✅ Built |
-| Census metro definitions (2023) | Which counties make up each metro | ✅ Built |
-| Census ACS 5-year | Income, renters, rent burden, home values | ✅ Built |
-| BLS QCEW | Monthly jobs and weekly wages | ✅ Built |
-| Census Building Permits | New housing supply | ✅ Built |
-| IRS SOI Migration | Net movers and income by county and metro | ✅ Built |
-
-## Master panel
-`pipeline/build_panel.py` runs the SQL models in `sql/` (DuckDB) to build one table:
-**every metro × every month since 2015**, with rent, home value, income, jobs, permits,
-migration, and mortgage rate side by side, plus affordability ratios. Eight SQL tests in
-`sql/tests/` must pass (zero failing rows each). Coverage and a spot check are written to
-`docs/panel_report.md`.
-
-## The crosswalk
-Every source names places differently. `pipeline/geo.py` matches Zillow's metros to
-official Census metro codes two independent ways, then writes a match-rate report to
-`docs/crosswalk_report.md`. Hand-checked fixes go in `docs/crosswalk_overrides.csv`.
+Every judgment call, from which home-value series to use to why a fitted model was rejected,
+is recorded with its reason in the [decisions log](docs/decisions.md).
 
 ## Run it
+
 ```bash
 python -m venv .venv
-source .venv/bin/activate        # Windows: .venv\Scripts\activate
+source .venv/bin/activate          # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-cp .env.example .env              # then paste your free API keys
-python -m pytest                  # offline tests, no internet needed
-python -m pipeline.run_all        # runs every source in order
-```
-Or run one source at a time: `python -m pipeline.zillow`, `pipeline.fred`, `pipeline.geo`,
-`pipeline.census_acs`, `pipeline.qcew`, `pipeline.permits`, `pipeline.migration`, then `pipeline.build_panel`, then `analysis.opportunity_index` and `analysis.rising_cities`, then `pipeline.zillow_city` and `analysis.policy_lab`, then `analysis.forecast_engine`, then `pipeline.geo_shapes` and `analysis.ripple_map`.
-
-Clean tables land in `data/clean/`. Every run adds a health line to `data/run_log.jsonl`.
-
-## Project structure
-```
-pipeline/   one script per data source, plus shared config and helpers
-tests/      offline tests using small fake data
-docs/       decisions log (every judgment call, with the reason)
-notebooks/  exploration
-app/        Streamlit app (later)
+cp .env.example .env               # add free Census, BLS and FRED API keys
+python -m pytest                   # offline tests, no data or keys needed
+python -m pipeline.run_all         # downloads every source and rebuilds every analysis
+streamlit run app/streamlit_app.py
 ```
 
-## Data notes
-- Zillow changes its CSV download paths occasionally. If a download fails, the error
-  message explains how to update the link in `pipeline/config.py`.
-- See `docs/decisions.md` for every methodology choice.
+## Data sources
 
-*Data: Zillow Research, Federal Reserve Bank of St. Louis (FRED), U.S. Census Bureau,
-Bureau of Labor Statistics, IRS Statistics of Income.*
+- [Zillow Research](https://www.zillow.com/research/data/): home values (ZHVI) and rents (ZORI) by metro, county and city
+- [Census American Community Survey](https://www.census.gov/programs-surveys/acs): income, renters and rent burden
+- [Census Building Permits Survey](https://www.census.gov/construction/bps/): new housing units authorized
+- [BLS Quarterly Census of Employment and Wages](https://www.bls.gov/cew/): jobs and wages by county
+- [IRS Statistics of Income migration data](https://www.irs.gov/statistics/soi-tax-stats-migration-data): moves between counties
+- [Federal Reserve Economic Data](https://fred.stlouisfed.org/): 30-year mortgage rate and consumer prices
+- [Census metro definitions, Gazetteer and boundary files](https://www.census.gov/geographies/reference-files.html): which counties form each metro, coordinates and state outlines
+
+## Known limits and next steps
+
+- The panel covers all 935 Census metro and micropolitan areas, but only metropolitan areas are ranked.
+  Of 393, Puerto Rico (6, no Zillow data), Connecticut (5, see below) and 3 metros created in the 2023 Census
+  update without Zillow series yet are left out, which gives 379.
+- Connecticut metros are not ranked yet. BLS moved Connecticut from counties to planning regions
+  in 2024, so job growth can't be compared across the change. A county-to-region crosswalk is next.
+- Migration data runs two years behind and job data about six months behind.
+- The Rising City and ripple signals predict well but do not prove cause and effect.
+- Planned: an automatic monthly refresh, and drive-time instead of straight-line distance in the Ripple Map.
+
+## Author
+
+Likhith Yedida. [LinkedIn](https://www.linkedin.com/in/likhithyedida) | [GitHub](https://github.com/LikhithYedida)

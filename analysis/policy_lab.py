@@ -430,7 +430,7 @@ def write_report(rent: dict, home: dict | None, figs: list[str]) -> None:
           "| Excluded | Reason |", "|---|---|"]
     for k, v in {**{f"All {s} cities": r for s, r in EXCLUDED_STATES.items()}, **EXCLUDED_CITIES}.items():
         L.append(f"| {k} | {v} |")
-    L += ["", f"- **Method:** demeaned synthetic control (weights ≥ 0, summing to 1) fit on {ADOPTED:%B %Y} and earlier. "
+    L += ["", f"- **Method:** demeaned synthetic control (non-negative weights that sum to 1) fit on {ADOPTED:%B %Y} and earlier. "
           f"Pre-reform fit error: **{main.pre_rmspe:.2%}** a month, so the twin tracked Minneapolis closely.",
           "- **Synthetic Minneapolis is made of:** " + ", ".join(
               f"{c} ({w:.0%})" for c, w in main.weights[main.weights > 0.03].items()) + ".", "",
@@ -486,6 +486,29 @@ def write_report(rent: dict, home: dict | None, figs: list[str]) -> None:
     REPORT.write_text("\n".join(L) + "\n", encoding="utf-8")
 
 
+SUMMARY = ROOT / "data" / "marts" / "policy_lab_summary.json"
+
+
+def save_summary(rent: dict, home: dict | None, tbl: pd.DataFrame) -> None:
+    """Headline numbers other layers (the executive memo, the app) read instead of hard-coding."""
+    import json
+    sm = rent["same_market"]["table"].head(2)  # broad suburb definitions: counties, cities composite
+    summary = {
+        "as_of": f"{tbl.iloc[-1]['date']:%Y-%m}",
+        "gap_latest": float(tbl.iloc[-1]["minneapolis"]),
+        "gap_end_2019": float(tbl.iloc[0]["minneapolis"]),
+        "p_value": float(rent["placebos"].attrs["p_value"]),
+        "n_donors": len(rent["donors"]),
+        "suburbs_gap": float(tbl.iloc[-1].get("suburbs", np.nan)),
+        "regional_share_low": float(sm["regional_share"].min()),
+        "regional_share_high": float(sm["regional_share"].max()),
+        "reform_effect_low_pp": float(abs(sm["beyond_suburbs_pp"]).min()),
+        "reform_effect_high_pp": float(abs(sm["beyond_suburbs_pp"]).max()),
+        "home_value_p_value": float(home["placebos"].attrs["p_value"]) if home else None,
+    }
+    SUMMARY.write_text(json.dumps(summary, indent=2), encoding="utf-8")
+
+
 def run() -> dict:
     df, meta = load()
     rent = study(df, meta, "rent")
@@ -502,6 +525,7 @@ def run() -> dict:
     if "suburbs" in rent:
         paths["suburbs_gap"] = rent["suburbs"].gap
     paths.reset_index(names="date").to_parquet(OUT, index=False)
+    save_summary(rent, home, tbl)
     last = tbl.iloc[-1]
     record_run("policy_lab", len(rent["donors"]), f"{last['date']:%Y-%m}",
                note=f"gap={last['minneapolis']:.3f};p={rent['placebos'].attrs['p_value']:.3f}")

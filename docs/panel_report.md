@@ -1,6 +1,6 @@
 # Master Panel Report
 
-**935 metros × 141 months (Jan 2015 – Sep 2026).** Tests: all passed.
+**935 metros by 141 months (Jan 2015 to Sep 2026).** Tests: all passed.
 
 ## Coverage
 

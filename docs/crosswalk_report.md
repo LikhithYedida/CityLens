@@ -1,4 +1,4 @@
-# Zillow → Census Metro Crosswalk Report
+# Zillow to Census Metro Crosswalk Report
 
 **886 of 907 Zillow metros matched (97.7%).**
 

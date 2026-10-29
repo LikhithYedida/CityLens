@@ -151,7 +151,7 @@ def write_report(x: pd.DataFrame) -> None:
     counts = x["match_method"].value_counts()
     matched = x["cbsa_code"].notna().sum()
     lines = [
-        "# Zillow → Census Metro Crosswalk Report", "",
+        "# Zillow to Census Metro Crosswalk Report", "",
         f"**{matched:,} of {len(x):,} Zillow metros matched ({matched / len(x):.1%}).**", "",
         "| Match method | Metros | Meaning |", "|---|---|---|",
     ]

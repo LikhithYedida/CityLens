@@ -52,7 +52,7 @@ def write_report(con: duckdb.DuckDBPyConnection, failed: list[str]) -> None:
         "SELECT count(DISTINCT cbsa_code), count(DISTINCT date), min(date), max(date) FROM mart_metro_month"
     ).fetchone()
     lines = ["# Master Panel Report", "",
-             f"**{n_metros:,} metros × {n_months} months ({first:%b %Y} – {last:%b %Y}).** "
+             f"**{n_metros:,} metros by {n_months} months ({first:%b %Y} to {last:%b %Y}).** "
              f"Tests: {'all passed' if not failed else 'FAILED: ' + ', '.join(failed)}.", "",
              "## Coverage", "",
              "Share of metro-months with a value. Low numbers are expected for yearly sources in "

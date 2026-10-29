@@ -44,9 +44,16 @@ Top fifth for ripple pressure, neighbors growing faster than the metro itself, a
 
 ## Backtest
 
-Rank correlation of next-year growth, model trained only on earlier years: own momentum alone → with neighbor rings.
+Rank correlation between predicted and actual next-year growth. Each year's model is trained only on earlier years.
 
-**2020:** 0.39 → 0.37 · **2021:** 0.43 → 0.44 · **2022:** 0.03 → 0.01 · **2023:** 0.52 → 0.54 · **2024:** 0.60 → 0.63 · **2025:** 0.71 → 0.73
+| Test year | Own momentum only | With neighbor rings |
+|---|---|---|
+| 2020 | 0.39 | 0.37 |
+| 2021 | 0.43 | 0.44 |
+| 2022 | 0.03 | 0.01 |
+| 2023 | 0.52 | 0.54 |
+| 2024 | 0.60 | 0.63 |
+| 2025 | 0.71 | 0.73 |
 
 ## How it works
 
