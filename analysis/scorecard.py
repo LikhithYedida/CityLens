@@ -137,7 +137,7 @@ def chart_scorecard(sc: pd.DataFrame, n: int = 15) -> str:
     ax.set_xlim(0, x0 + ncol * W + 2.3)
     ax.set_ylim(-0.2, n + 1.6)
     charts.title(fig, f"The {n} largest metros at a glance",
-                 "Blue cells beat most U.S. metros for a household; orange cells trail them. "
+                 "Blue cells beat most U.S. metros for a household and orange cells trail them. "
                  "Sorted by Opportunity rank, out of 379.")
     return charts.save(fig, FIG, top=0.9)
 
@@ -257,15 +257,14 @@ def short_name(title: str, state: bool = False) -> str:
     city, st = title.split(",")[0], title.split(",")[-1].strip().split("-")[0]
     parts = city.split("-")
     name = city if len(parts) == 2 and len(city) <= 20 else parts[0]
-    return f"{name}, {st}" if state else name
+    return f"{name} ({st})" if state else name
 
 
 def names(df: pd.DataFrame, k: int, state: bool = False) -> str:
     items = [short_name(m, state) for m in df["metro"].head(k)]
     if len(items) == 1:
         return items[0]
-    sep = "; " if state else ", "
-    return sep.join(items[:-1]) + ("; and " if state else " and ") + items[-1]
+    return ", ".join(items[:-1]) + " and " + items[-1]
 
 
 def write_memo(sc: pd.DataFrame) -> None:
@@ -301,7 +300,7 @@ def write_memo(sc: pd.DataFrame) -> None:
          f"2. **Price growth has changed direction.** {int(rising['region'].ne('South and West').sum())} of "
          f"{len(rising)} metros flagged to outgrow the national market next year are in the Midwest or Northeast. "
          f"{int(cooling['region'].eq('South and West').sum())} of {len(cooling)} cooling boomtowns are in the South "
-         "and West. Before 2022, metros gaining residents saw faster price growth; since 2022 they have seen slower "
+         "and West. Before 2022, metros gaining residents saw faster price growth. Since 2022 they have seen slower "
          "growth.",
          f"3. **Growth spreads about 75 miles.** When metros within 75 miles grow faster, a metro tends to grow "
          f"{ripple:.2f} points faster the following year (per standard deviation), and the pattern held before, "

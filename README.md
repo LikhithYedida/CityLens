@@ -1,6 +1,9 @@
 # CityLens
 
+[![Live app](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://citylens-us.streamlit.app)
 [![tests](https://github.com/LikhithYedida/CityLens/actions/workflows/tests.yml/badge.svg)](https://github.com/LikhithYedida/CityLens/actions/workflows/tests.yml)
+
+**Try it live: [citylens-us.streamlit.app](https://citylens-us.streamlit.app)**
 
 I started this project with a simple question: if you earn a typical paycheck in America
 today, where does it still go far, and where is that about to change?
@@ -54,7 +57,7 @@ fell about 8 percent too. My estimate is that the reform itself accounts for 8 t
 
 ## The app
 
-The Streamlit app turns the analysis into three tools:
+The [live app](https://citylens-us.streamlit.app) turns the analysis into three tools:
 
 - **Where to live.** Enter an income, rent or buy, a down payment and a budget, and see which
   metros fit and how much is left each month.
@@ -63,9 +66,8 @@ The Streamlit app turns the analysis into three tools:
 - **Metro profile.** Any metro against its peers and the national median, with its price history
   and the neighbors most likely to pull it along.
 
-```bash
-streamlit run app/streamlit_app.py
-```
+No install needed for the hosted version. To run it on your own machine, see
+[Run it yourself](#run-it-yourself).
 
 ## How it is built
 
