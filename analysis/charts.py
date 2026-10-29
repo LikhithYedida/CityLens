@@ -59,3 +59,31 @@ def save(fig, path: Path, top: float = 0.82) -> str:
 def end_label(ax, x, y, text: str, color: str = INK, bold: bool = False, dy: float = 0) -> None:
     ax.annotate(text, (x, y), xytext=(5, dy), textcoords="offset points", va="center", fontsize=8,
                 color=color, fontweight="bold" if bold else "normal")
+
+
+def label_points(ax, xs, ys, texts, dx: float = 6, dy: float = 0, step: float = 9, color: str = INK,
+                 bold: bool = False, fontsize: float = 7.5, ha: str = "left") -> None:
+    """Label points without overlaps. Each label tries its default spot, then nudges up and
+    down, then tries the other side; it is never dropped. A thin halo keeps text readable
+    on top of markers, and a hairline leader connects any label that had to move."""
+    import matplotlib.patheffects as pe
+    fig = ax.figure
+    fig.canvas.draw()
+    renderer = fig.canvas.get_renderer()
+    halo = [pe.withStroke(linewidth=2.4, foreground=SURFACE)]
+    other = "right" if ha == "left" else "left"
+    tries = [(dx, k, ha) for k in (0, 1, -1, 2, -2, 3, -3)] + [(-dx, k, other) for k in (0, 1, -1, 2, -2)]
+    placed = []
+    for x, y, text in zip(xs, ys, texts):
+        for i, (ddx, k, side) in enumerate(tries):
+            last = i == len(tries) - 1
+            ann = ax.annotate(text, (x, y), xytext=(ddx, dy + k * step), textcoords="offset points", ha=side,
+                              va="center", fontsize=fontsize, color=color, zorder=5, path_effects=halo,
+                              fontweight="bold" if bold else "normal",
+                              arrowprops=dict(arrowstyle="-", color=NEUTRAL, lw=0.5, shrinkA=0, shrinkB=2)
+                              if (k or side != ha) else None)
+            bb = ann.get_window_extent(renderer).expanded(1.04, 1.15)
+            if last or not any(bb.overlaps(p) for p in placed):
+                placed.append(bb)
+                break
+            ann.remove()

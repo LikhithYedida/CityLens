@@ -65,3 +65,8 @@ ZILLOW_CITY_FILES = {
     "rent": f"{_Z}/zori/City_zori_uc_sfrcondomfr_sm_month.csv",
     "home_value": f"{_Z}/zhvi/City_zhvi_uc_sfrcondo_tier_0.33_0.67_sm_sa_month.csv",
 }
+
+# Census geography for maps and distances (Layer 6)
+GAZETTEER_CBSA_URL = ("https://www2.census.gov/geo/docs/maps-data/data/gazetteer/"
+                      "2024_Gazetteer/2024_Gaz_cbsa_national.zip")
+STATE_SHAPES_URL = "https://www2.census.gov/geo/tiger/GENZ2023/shp/cb_2023_us_state_20m.zip"

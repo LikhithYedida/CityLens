@@ -78,6 +78,20 @@ the test with synthetic control and then tries to break it. [Full report](docs/p
   ten slowest are metros the Rising City Detector had already flagged as Cooling Boomtowns,
   using different data and a different method.
 
+**Ripple Map (Layer 6):** when a metro booms, which neighbors follow, and how far does growth
+spread? Spatial statistics on 376 lower-48 metros. [Full report](docs/ripple_map_report.md)
+
+![Where home-value growth clusters](docs/figures/ripple_cluster_map.png)
+
+- **Growth clusters strongly by geography** (Moran's I = 0.69, p = 0.001). 97 metros form rising
+  clusters, a belt from Chicago and Detroit to Philadelphia and New York. 67 form cooling
+  clusters across Texas, Florida, Colorado and coastal California.
+- **Growth ripples about 75 miles, then fades.** Faster growth among neighbors within 75 miles
+  adds +0.45 points to a metro's next-year growth (per standard deviation), beyond its own
+  momentum, and the effect held in 2016-19, 2020-21 and 2022-25 alike. Beyond 150 miles it disappears.
+- **26 affordable metros are in the Next Ring Out**, where neighbors are pulling ahead and growth
+  hasn't arrived yet: Eau Claire, Fargo, Bloomington IL, Fort Wayne, Davenport, Buffalo and more.
+
 ## Roadmap
 | Layer | Question it answers | Status |
 |---|---|---|
@@ -86,8 +100,8 @@ the test with synthetic control and then tries to break it. [Full report](docs/p
 | 3. Rising City Detector | Which affordable metros are about to grow? | ✅ Done |
 | 4. Policy Lab | Did Minneapolis's zoning reform slow rent growth? (synthetic control) | ✅ Done |
 | 5. Forecast Engine | Where will rents be in 12 months, with honest uncertainty? | ✅ Done |
-| 6. Ripple Map | When a metro booms, which neighbors follow? | Next |
-| 7. Decision Tools | Where should a family move, or a builder build? (app + executive memo) | Planned |
+| 6. Ripple Map | When a metro booms, which neighbors follow? | ✅ Done |
+| 7. Decision Tools | Where should a family move, or a builder build? (app + executive memo) | Next |
 | Ops | Monthly automatic refresh with health checks (GitHub Actions) | Planned |
 
 ## Data sources
@@ -123,7 +137,7 @@ python -m pytest                  # offline tests, no internet needed
 python -m pipeline.run_all        # runs every source in order
 ```
 Or run one source at a time: `python -m pipeline.zillow`, `pipeline.fred`, `pipeline.geo`,
-`pipeline.census_acs`, `pipeline.qcew`, `pipeline.permits`, `pipeline.migration`, then `pipeline.build_panel`, then `analysis.opportunity_index` and `analysis.rising_cities`, then `pipeline.zillow_city` and `analysis.policy_lab`, then `analysis.forecast_engine`.
+`pipeline.census_acs`, `pipeline.qcew`, `pipeline.permits`, `pipeline.migration`, then `pipeline.build_panel`, then `analysis.opportunity_index` and `analysis.rising_cities`, then `pipeline.zillow_city` and `analysis.policy_lab`, then `analysis.forecast_engine`, then `pipeline.geo_shapes` and `analysis.ripple_map`.
 
 Clean tables land in `data/clean/`. Every run adds a health line to `data/run_log.jsonl`.
 
