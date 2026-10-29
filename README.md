@@ -60,6 +60,24 @@ the test with synthetic control and then tries to break it. [Full report](docs/p
 - **Best estimate: the reform explains at most 8-10 points of lower rent.** The 17-34% headline
   overstates it; "no effect" understates it. The home-value gap isn't statistically clear (p = 0.21).
 
+**Forecast Engine (Layer 5):** 12-month rent and home-value forecasts for every metro, with
+80% ranges, tested in a rolling backtest against simple baselines. [Full report](docs/forecast_report.md)
+
+![Rent forecast for the 12 largest metros](docs/figures/forecast_large_metros.png)
+
+- **Beats every simple baseline:** rent forecasts missed by 3.1 points of 12-month growth on
+  average vs. 3.5 for the best baseline (11% smaller errors), and 34% smaller since 2022.
+  Home values: 13% smaller errors overall, roughly tied with the best baseline since 2022.
+- **No model saw the pandemic coming.** Most forecast error is the national swing. Two designs
+  failed in different years (one missed the 2021 surge, the other the 2022 rate turn), so the
+  final forecast averages them. Every design tried is reported, including the losers.
+- **Honest ranges:** 94-96% of outcomes landed inside the 80% ranges in 2022-2025; 72-81%
+  including the pandemic shock.
+- **Next 12 months:** typical metro rent +3.1%. The slowest growth is forecast for Florida and
+  Texas (Sarasota, Cape Coral, Austin, Dallas, Houston, San Antonio, Orlando). Seven of the
+  ten slowest are metros the Rising City Detector had already flagged as Cooling Boomtowns,
+  using different data and a different method.
+
 ## Roadmap
 | Layer | Question it answers | Status |
 |---|---|---|
@@ -67,8 +85,8 @@ the test with synthetic control and then tries to break it. [Full report](docs/p
 | 2. Opportunity Index | Where does a paycheck go furthest today? | ✅ Done |
 | 3. Rising City Detector | Which affordable metros are about to grow? | ✅ Done |
 | 4. Policy Lab | Did Minneapolis's zoning reform slow rent growth? (synthetic control) | ✅ Done |
-| 5. Forecast Engine | Where will rents be in 12 months, with honest uncertainty? | Next |
-| 6. Ripple Map | When a metro booms, which neighbors follow? | Planned |
+| 5. Forecast Engine | Where will rents be in 12 months, with honest uncertainty? | ✅ Done |
+| 6. Ripple Map | When a metro booms, which neighbors follow? | Next |
 | 7. Decision Tools | Where should a family move, or a builder build? (app + executive memo) | Planned |
 | Ops | Monthly automatic refresh with health checks (GitHub Actions) | Planned |
 
@@ -105,7 +123,7 @@ python -m pytest                  # offline tests, no internet needed
 python -m pipeline.run_all        # runs every source in order
 ```
 Or run one source at a time: `python -m pipeline.zillow`, `pipeline.fred`, `pipeline.geo`,
-`pipeline.census_acs`, `pipeline.qcew`, `pipeline.permits`, `pipeline.migration`, then `pipeline.build_panel`, then `analysis.opportunity_index` and `analysis.rising_cities`, then `pipeline.zillow_city` and `analysis.policy_lab`.
+`pipeline.census_acs`, `pipeline.qcew`, `pipeline.permits`, `pipeline.migration`, then `pipeline.build_panel`, then `analysis.opportunity_index` and `analysis.rising_cities`, then `pipeline.zillow_city` and `analysis.policy_lab`, then `analysis.forecast_engine`.
 
 Clean tables land in `data/clean/`. Every run adds a health line to `data/run_log.jsonl`.
 

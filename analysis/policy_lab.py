@@ -304,62 +304,77 @@ def _events(ax, ymax):
 
 
 def charts(res: dict) -> list[str]:
-    import matplotlib
-    matplotlib.use("Agg")
-    import matplotlib.pyplot as plt
+    from analysis import charts as ch
+    import matplotlib.dates as mdates
+    import matplotlib.ticker as mt
 
-    FIG_DIR.mkdir(parents=True, exist_ok=True)
     main = res["main"]
     files = []
 
-    # 1. Minneapolis vs. synthetic Minneapolis (dollars)
-    fig, ax = plt.subplots(figsize=(9, 4.6), dpi=150, facecolor=SURFACE)
-    actual, synth_ = np.exp(main.actual), np.exp(main.synthetic)
-    ax.plot(synth_.index, synth_, color=NEUTRAL, lw=2, ls=(0, (4, 2)))
-    ax.plot(actual.index, actual, color=SERIES_1, lw=2)
-    _style(ax, "Minneapolis rent vs. a synthetic Minneapolis built from 180 other cities",
-           "Typical asking rent (Zillow ZORI)")
-    ymax = max(actual.max(), synth_.max()) * 1.04
-    ax.set_ylim(actual.min() * 0.95, ymax)
-    _events(ax, ymax)
-    end = actual.index[-1]
-    ax.annotate(f"Synthetic Minneapolis ${synth_.iloc[-1]:,.0f}", (end, synth_.iloc[-1]), xytext=(6, 0),
-                textcoords="offset points", color=INK_2, fontsize=9, va="center")
-    ax.annotate(f"Minneapolis ${actual.iloc[-1]:,.0f}", (end, actual.iloc[-1]), xytext=(6, 0),
-                textcoords="offset points", color=INK, fontsize=9, va="center", fontweight="bold")
-    ax.set_xlim(actual.index[0], end + pd.DateOffset(months=26))
-    fig.tight_layout()
-    f1 = FIG_DIR / "policy_lab_rent_vs_synthetic.png"
-    fig.savefig(f1, facecolor=SURFACE)
-    plt.close(fig)
-    files.append(f1.name)
+    def events(ax, y_text):
+        ax.axvspan(PAUSE[0], PAUSE[1], color=GRID, alpha=0.7, lw=0)
+        ax.text(PAUSE[0] + (PAUSE[1] - PAUSE[0]) / 2, y_text, "court\npause", ha="center", va="top",
+                fontsize=7, color=INK_2)
+        for d, label, ha in [(ADOPTED, "plan adopted ", "right"), (EFFECTIVE, " takes effect", "left")]:
+            ax.axvline(d, color=INK_2, lw=0.7, ls=(0, (2, 2)))
+            ax.text(d, y_text, label, ha=ha, va="top", fontsize=7, color=INK_2)
+        ax.set_xticks(pd.date_range("2016-01-01", "2026-01-01", freq="2YS"))
+        ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y"))
 
-    # 2. Gap paths: 50 peers (gray), suburbs (orange), Minneapolis (blue)
-    fig, ax = plt.subplots(figsize=(9, 4.6), dpi=150, facecolor=SURFACE)
+    # 1. Minneapolis vs. synthetic Minneapolis, in dollars, with the gap labeled
+    fig, ax = ch.new(6.6, 3.0)
+    actual, twin = np.exp(main.actual), np.exp(main.synthetic)
+    ax.plot(twin.index, twin, color=NEUTRAL, lw=1.8, ls=(0, (4, 2)))
+    ax.plot(actual.index, actual, color=SERIES_1, lw=2)
+    end = actual.index[-1]
+    ch.end_label(ax, end, twin.iloc[-1], f"Synthetic ${twin.iloc[-1]:,.0f}", color=INK_2)
+    ch.end_label(ax, end, actual.iloc[-1], f"Minneapolis ${actual.iloc[-1]:,.0f}", bold=True)
+    gap_d = twin.iloc[-1] - actual.iloc[-1]
+    ax.annotate("", xy=(end, actual.iloc[-1]), xytext=(end, twin.iloc[-1]),
+                arrowprops=dict(arrowstyle="<->", color=INK_2, lw=0.8))
+    ax.text(end - pd.DateOffset(months=2), (actual.iloc[-1] + twin.iloc[-1]) / 2,
+            f"{np.expm1(main.gap.iloc[-1]):.0%}\n(${gap_d:,.0f}/mo)", ha="right", va="center", fontsize=8,
+            color=INK, fontweight="bold")
+    pre_end = ADOPTED - pd.DateOffset(months=1)
+    ax.plot([pre_end], [actual[pre_end]], "o", color=SERIES_1, ms=4)
+    ax.annotate(f"matched within {main.pre_rmspe:.1%}\nbefore the plan", (pre_end, actual[pre_end]),
+                xytext=(-8, 18), textcoords="offset points", ha="right", fontsize=7.5, color=INK_2)
+    ax.yaxis.set_major_formatter(mt.FuncFormatter(lambda v, _: f"${v:,.0f}"))
+    lo, hi = actual.min() * 0.96, max(actual.max(), twin.max()) * 1.06
+    ax.set_ylim(lo, hi)
+    events(ax, hi)
+    ax.set_xlim(actual.index[0], end + pd.DateOffset(months=34))
+    ch.title(fig, "Minneapolis rent vs. its synthetic twin",
+             f"Typical asking rent (Zillow). Twin = weighted blend of {len(res['donors'])} cities that matched it before 2019")
+    files.append(ch.save(fig, FIG_DIR / "policy_lab_rent_vs_synthetic.png", top=0.84))
+
+    # 2. Gap vs. twin: Minneapolis, its suburbs, and 50 peer cities
+    fig, ax = ch.new(6.6, 3.0)
     peers = np.expm1(res["peers"])
     for c in peers.columns:
-        ax.plot(peers.index, peers[c], color=FAINT, lw=1)
+        ax.plot(peers.index, peers[c], color=FAINT, lw=0.8)
     gap = np.expm1(main.gap)
-    lines = [(gap, SERIES_1, "Minneapolis", INK)]
+    ax.axhline(0, color=INK_2, lw=0.7)
     if "suburbs" in res:
-        lines.insert(0, (np.expm1(res["suburbs"].gap), SERIES_2, "Suburban counties\n(not covered by reform)", INK_2))
-    for s, color, label, ink in lines:
-        ax.plot(s.index, s, color=color, lw=2.2)
-        ax.annotate(f"{label} {s.iloc[-1]:+.0%}", (s.index[-1], s.iloc[-1]), xytext=(6, 0),
-                    textcoords="offset points", color=ink, fontsize=9, va="center",
-                    fontweight="bold" if label == "Minneapolis" else "normal")
-    ax.axhline(0, color=INK_2, lw=0.8)
-    _style(ax, "Gap vs. synthetic twin: Minneapolis, its suburbs, and the 50 largest cities (gray)",
-           "Rent gap vs. synthetic twin")
-    lo, hi = min(peers.min().min(), gap.min()) * 1.1, max(peers.max().max(), 0.05) * 1.1
+        sg = np.expm1(res["suburbs"].gap)
+        ax.plot(sg.index, sg, color=SERIES_2, lw=2)
+        ch.end_label(ax, sg.index[-1], sg.iloc[-1], f"Suburbs {sg.iloc[-1]:+.0%}", color=INK_2)
+    ax.plot(gap.index, gap, color=SERIES_1, lw=2)
+    ch.end_label(ax, gap.index[-1], gap.iloc[-1], f"Minneapolis {gap.iloc[-1]:+.0%}", bold=True)
+    ch.end_label(ax, peers.index[-1], peers.iloc[-1].median(), f"Typical city {peers.iloc[-1].median():+.0%}",
+                 color=INK_2)
+    d19 = pd.Timestamp("2019-12-01")
+    ax.plot([d19], [gap[d19]], "o", color=SERIES_1, ms=4)
+    ax.annotate(f"{gap[d19]:+.1%} a year after\nthe plan passed", (d19, gap[d19]), xytext=(-6, -26),
+                textcoords="offset points", ha="right", fontsize=7.5, color=INK_2)
+    ax.yaxis.set_major_formatter(mt.PercentFormatter(1, decimals=0))
+    lo, hi = min(peers.min().min(), gap.min()) * 1.08, max(peers.max().max(), 0.05) * 1.1
     ax.set_ylim(lo, hi)
-    _events(ax, hi)
-    ax.set_xlim(gap.index[0], gap.index[-1] + pd.DateOffset(months=30))
-    fig.tight_layout()
-    f2 = FIG_DIR / "policy_lab_gap_paths.png"
-    fig.savefig(f2, facecolor=SURFACE)
-    plt.close(fig)
-    files.append(f2.name)
+    events(ax, hi)
+    ax.set_xlim(gap.index[0], gap.index[-1] + pd.DateOffset(months=34))
+    ch.title(fig, "Rent gap vs. synthetic twin",
+             "Minneapolis, its suburbs (not covered by the reform), and the 50 largest cities (gray)")
+    files.append(ch.save(fig, FIG_DIR / "policy_lab_gap_paths.png", top=0.84))
     return files
 
 

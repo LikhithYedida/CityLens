@@ -3,7 +3,7 @@
 Run:  python -m pipeline.run_all
 """
 from pipeline import build_panel, census_acs, fred, geo, migration, permits, qcew, zillow, zillow_city
-from analysis import opportunity_index, policy_lab, rising_cities
+from analysis import forecast_engine, opportunity_index, policy_lab, rising_cities
 from pipeline.utils import log
 
 STEPS = [("Zillow", zillow.run), ("FRED", fred.run), ("Crosswalk", geo.run),
@@ -12,7 +12,8 @@ STEPS = [("Zillow", zillow.run), ("FRED", fred.run), ("Crosswalk", geo.run),
          ("Master panel", build_panel.run),
          ("Opportunity Index", opportunity_index.run),
          ("Rising City Detector", rising_cities.run),
-         ("Zillow city data", zillow_city.run), ("Policy Lab", policy_lab.run)]
+         ("Zillow city data", zillow_city.run), ("Policy Lab", policy_lab.run),
+         ("Forecast Engine", forecast_engine.run)]
 
 if __name__ == "__main__":
     failed = []
