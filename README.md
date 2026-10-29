@@ -45,14 +45,29 @@ metro-years, plus a walk-forward backtest. [Full report](docs/rising_cities_repo
   also a Cooling Boomtown: falling prices plus strong job growth make it one of the best deals
   for someone moving there now.
 
+**Policy Lab (Layer 4):** did Minneapolis's 2018 decision to end single-family-only zoning slow
+rent growth? Published studies disagree (from 17-34% lower to 3-5% higher), so this rebuilds
+the test with synthetic control and then tries to break it. [Full report](docs/policy_lab_report.md)
+
+![Minneapolis rent vs synthetic Minneapolis](docs/figures/policy_lab_rent_vs_synthetic.png)
+
+- **The headline replicates:** Minneapolis rents are 16% below a synthetic Minneapolis built from
+  180 cities; only 2 of 180 placebo cities show a gap as unusual (p = 0.017).
+- **But the gap opened in 2020, not after the 2018 vote**, alongside COVID and the unrest after
+  George Floyd's murder.
+- **Roughly a third to a half of the gap also shows up in Minneapolis's own suburbs**, which the
+  reform didn't cover. That part is regional.
+- **Best estimate: the reform explains at most 8-10 points of lower rent.** The 17-34% headline
+  overstates it; "no effect" understates it. The home-value gap isn't statistically clear (p = 0.21).
+
 ## Roadmap
 | Layer | Question it answers | Status |
 |---|---|---|
 | 1. Data foundation | 7 public sources joined into one tested metro-by-month table | ✅ Done |
 | 2. Opportunity Index | Where does a paycheck go furthest today? | ✅ Done |
 | 3. Rising City Detector | Which affordable metros are about to grow? | ✅ Done |
-| 4. Policy Lab | Did Minneapolis's zoning reform slow rent growth? (synthetic control) | Next |
-| 5. Forecast Engine | Where will rents be in 12 months, with honest uncertainty? | Planned |
+| 4. Policy Lab | Did Minneapolis's zoning reform slow rent growth? (synthetic control) | ✅ Done |
+| 5. Forecast Engine | Where will rents be in 12 months, with honest uncertainty? | Next |
 | 6. Ripple Map | When a metro booms, which neighbors follow? | Planned |
 | 7. Decision Tools | Where should a family move, or a builder build? (app + executive memo) | Planned |
 | Ops | Monthly automatic refresh with health checks (GitHub Actions) | Planned |
@@ -90,7 +105,7 @@ python -m pytest                  # offline tests, no internet needed
 python -m pipeline.run_all        # runs every source in order
 ```
 Or run one source at a time: `python -m pipeline.zillow`, `pipeline.fred`, `pipeline.geo`,
-`pipeline.census_acs`, `pipeline.qcew`, `pipeline.permits`, `pipeline.migration`, then `pipeline.build_panel`, then `analysis.opportunity_index` and `analysis.rising_cities`.
+`pipeline.census_acs`, `pipeline.qcew`, `pipeline.permits`, `pipeline.migration`, then `pipeline.build_panel`, then `analysis.opportunity_index` and `analysis.rising_cities`, then `pipeline.zillow_city` and `analysis.policy_lab`.
 
 Clean tables land in `data/clean/`. Every run adds a health line to `data/run_log.jsonl`.
 

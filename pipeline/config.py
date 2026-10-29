@@ -59,3 +59,9 @@ IRS_INFLOW_URL = "https://www.irs.gov/pub/irs-soi/countyinflow{yy}.csv"
 IRS_OUTFLOW_URL = "https://www.irs.gov/pub/irs-soi/countyoutflow{yy}.csv"
 IRS_FIRST_PERIOD = 2015   # 2015-2016 file ("1516")
 IRS_NEW_SERIES_FROM = 2022  # 2022-2023 file onward uses the IRS's enhanced matching
+
+# Zillow city-level files (Policy Lab). Large: the city home-value file is about 95 MB.
+ZILLOW_CITY_FILES = {
+    "rent": f"{_Z}/zori/City_zori_uc_sfrcondomfr_sm_month.csv",
+    "home_value": f"{_Z}/zhvi/City_zhvi_uc_sfrcondo_tier_0.33_0.67_sm_sa_month.csv",
+}
